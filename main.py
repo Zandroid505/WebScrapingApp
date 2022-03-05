@@ -1,5 +1,6 @@
 #
-# Example file for retrieving data from the internet
+# Zakaria Antifit & Kobe Conomon
+# March 5th, 2022
 #
 
 import urllib.request
@@ -12,23 +13,21 @@ import requests
 
 
 def main():
-    # weburl = urllib.request.urlopen("https://www.instagram.com/kconomon/")
-    # print(webUrl.getcode())
-    # data = webUrl.read()
     file = open("webScrape.txt", "w")
+    weathersite = requests.get("https://weather.com/")
+    # city = input from user
+    # search for city on weather.com
+    # weburl = url of weather.com for particular city
+    soup = bs(weathersite.text, "html.parser")
+    links = soup.find_all('span', "CurrentConditions--tempValue--3a50n")
+    retrieveddata = str(links)
+    # for(iterarte from end of string to temperature [ex:83°]
+        # temperature = read temperature from string
 
-    weburl = requests.get("https://weather.com/")
-    soup = bs(weburl.text, "html.parser")
-    links = soup.find_all('span')
-    file.write(str(links))
+    # Write temperature to file
+
+    print(retrieveddata)
     time.sleep(3)
-
-    # soup = bs(webUrl.content)
-    # print(soup)
-    # soup.find_all(class='QGPIr')
-
-    # titleString = soup.title.string
-    # print(titleString)
 
 
 if __name__ == "__main__":
