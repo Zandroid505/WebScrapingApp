@@ -5,7 +5,7 @@
 
 from bs4 import BeautifulSoup as bs
 import matplotlib.pyplot as plt
-# import pandas as pd
+import pandas as pd
 
 try:
     from googlesearch import search
@@ -15,22 +15,27 @@ except ImportError:
 import time
 import requests
 
+
 def plot_graph(dictionary, city):
-  plt.style.use('_mpl-gallery')
+    plt.style.use('_mpl-gallery')
 
-  # separating dates and temperatures from dictionary
-  for i in range(10):
-    temperatures = dictionary.values()
+    plt.figure(figsize=(10, 6), tight_layout=True)
 
-  for i in range(10):
-    keys = dictionary.keys()
+    # separating dates and temperatures from dictionary
+    for i in range(10):
+        temperatures = dictionary.values()
 
-  # plotting values
-  plt.plot(keys, temperatures)
-  plt.title('10-day Forecast for ' + city)
-  plt.xlabel('Date')
-  plt.ylabel('Temperature (in °F)')
-  plt.show()
+    for i in range(10):
+        dates = dictionary.keys()
+
+    # plotting values
+    plt.plot(dates, temperatures)
+    plt.plot(dictionary.values(), 'o-', linewidth=2)
+    plt.title('10-day Forecast for ' + city)
+    plt.xlabel('Date')
+    plt.ylabel('Temperature (in °F)')
+    plt.show()
+
 
 # User HTML parser to retrieve temperature
 def retrieve_data(dates, temperatures):
@@ -69,12 +74,13 @@ def main():
 
     forecast = retrieve_data(urldates, urltemperatures)
 
+    plot_graph(forecast, city)
+
     file.write(str(forecast))
 
     # Use dictionary with date as key and temperature as value
 
     # Write temperature to file
-
 
 
 if __name__ == "__main__":
