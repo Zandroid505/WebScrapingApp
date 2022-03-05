@@ -4,7 +4,8 @@
 #
 
 from bs4 import BeautifulSoup as bs
-import pandas as pd
+import matplotlib.pyplot as plt
+# import pandas as pd
 
 try:
     from googlesearch import search
@@ -14,6 +15,22 @@ except ImportError:
 import time
 import requests
 
+def plot_graph(dictionary, city):
+  plt.style.use('_mpl-gallery')
+
+  # separating dates and temperatures from dictionary
+  for i in range(10):
+    temperatures = dictionary.values()
+
+  for i in range(10):
+    keys = dictionary.keys()
+
+  # plotting values
+  plt.plot(keys, temperatures)
+  plt.title('10-day Forecast for ' + city)
+  plt.xlabel('Date')
+  plt.ylabel('Temperature (in °F)')
+  plt.show()
 
 # User HTML parser to retrieve temperature
 def retrieve_data(dates, temperatures):
