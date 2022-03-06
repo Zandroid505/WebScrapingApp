@@ -34,7 +34,9 @@ def plot_graph(dictionary, city):
     plt.title('10-day Forecast for ' + city)
     plt.xlabel('Date')
     plt.ylabel('Temperature (in °F)')
-    plt.show()
+    # plt.show()
+
+    return plt
 
 
 # User HTML parser to retrieve temperature
@@ -56,7 +58,7 @@ def google_query(city):
         return requests.get(j)
 
 
-def main():
+def manager():
     file = open("webScrape.txt", "w")
 
     # city = input from user
@@ -74,14 +76,9 @@ def main():
 
     forecast = retrieve_data(urldates, urltemperatures)
 
-    plot_graph(forecast, city)
+    return plot_graph(forecast, city)
 
-    file.write(str(forecast))
 
     # Use dictionary with date as key and temperature as value
 
-    # Write temperature to file
 
-
-if __name__ == "__main__":
-    main()
