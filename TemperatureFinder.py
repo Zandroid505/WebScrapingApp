@@ -3,22 +3,19 @@
 # March 5th, 2022
 #
 
-from bs4 import BeautifulSoup as bs
-import matplotlib.pyplot as plt
-import pandas as pd
 
 try:
     from googlesearch import search
 except ImportError:
     print("No module name 'google' found")
-# pd.set_option('display.max_colwidth', 500)
-import time
+from bs4 import BeautifulSoup as bs
+import matplotlib.pyplot as plt
 import requests
 
 
 class TemperatureFinder:
-    def __init__(self, ):
-        self.city = ""
+    def __init__(self, city):
+        self.city = city
 
     def plot_graph(self, dictionary, city):
         plt.style.use('_mpl-gallery')
@@ -28,7 +25,6 @@ class TemperatureFinder:
         # separating dates and temperatures from dictionary
         for i in range(10):
             temperatures = dictionary.values()
-
         for i in range(10):
             dates = dictionary.keys()
 
@@ -38,7 +34,6 @@ class TemperatureFinder:
         plt.title('10-day Forecast for ' + city)
         plt.xlabel('Date')
         plt.ylabel('Temperature (in °F)')
-        # plt.show()
 
         return plt
 
@@ -60,12 +55,8 @@ class TemperatureFinder:
             return requests.get(j)
 
     def manager(self):
-        # city = input from user
-        self.city = input("Type in a city to find the 10-day forecast: ")
-
         url = self.google_query()
 
-        # weburl = url of weather.com for particular city
         soup = bs(url.text, "html.parser")
 
         # Retrieving the dates

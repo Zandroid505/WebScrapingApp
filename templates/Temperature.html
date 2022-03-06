@@ -1,3 +1,22 @@
-<!doctype html>
-<h1> 10-day Weather Forecast</h1>
-<img src="data:image/jpeg;base64,{{ img_data }}" alt="Temperature Graph">
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+    {% if city %}
+        <img src="data:image/jpeg;base64,{{ img_data }}" alt="Temperature Graph" class="center">
+    {% else %}
+        <img src="resources/searchCity.png" align="middle" />
+    {% endif %}
+<div class="header">
+<form action="/index" method = "POST">
+    <div class="search_bar">
+      <input type="text" id="city" name="city" ></div>
+    <div class="search_button">
+    <input type="button" name="enter" value="Enter"></div>
+</form>
+</div>
+</body>
+</html>
