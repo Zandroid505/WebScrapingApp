@@ -16,69 +16,63 @@ import time
 import requests
 
 
-def plot_graph(dictionary, city):
-    plt.style.use('_mpl-gallery')
+class TemperatureFinder:
+    def __init__(self, ):
+        self.city = ""
 
-    plt.figure(figsize=(10, 6), tight_layout=True)
+    def plot_graph(self, dictionary, city):
+        plt.style.use('_mpl-gallery')
 
-    # separating dates and temperatures from dictionary
-    for i in range(10):
-        temperatures = dictionary.values()
+        plt.figure(figsize=(10, 6), tight_layout=True)
 
-    for i in range(10):
-        dates = dictionary.keys()
+        # separating dates and temperatures from dictionary
+        for i in range(10):
+            temperatures = dictionary.values()
 
-    # plotting values
-    plt.plot(dates, temperatures)
-    plt.plot(dictionary.values(), 'o-', linewidth=2)
-    plt.title('10-day Forecast for ' + city)
-    plt.xlabel('Date')
-    plt.ylabel('Temperature (in °F)')
-    # plt.show()
+        for i in range(10):
+            dates = dictionary.keys()
 
-    return plt
+        # plotting values
+        plt.plot(dates, temperatures)
+        plt.plot(dictionary.values(), 'o-', linewidth=2)
+        plt.title('10-day Forecast for ' + city)
+        plt.xlabel('Date')
+        plt.ylabel('Temperature (in °F)')
+        # plt.show()
 
+        return plt
 
-# User HTML parser to retrieve temperature
-def retrieve_data(dates, temperatures):
-    forecast = {}
-    for i in range(10):
-        currdate = dates[i + 1].text
-        currtemperature = int(temperatures[i + 1].text[:-1])
-        forecast.update({currdate: currtemperature})
+    # User HTML parser to retrieve temperature
+    def retrieve_data(self, dates, temperatures):
+        forecast = {}
+        for i in range(10):
+            currdate = dates[i + 1].text
+            currtemperature = int(temperatures[i + 1].text[:-1])
+            forecast.update({currdate: currtemperature})
 
-    return forecast
+        return forecast
 
+    def google_query(self):
+        query = self.city + " 10-Day Weather Forecast"
 
-def google_query(city):
-    query = city + " 10-Day Weather Forecast"
+        # search for city on weather.com
+        for j in search(query, tld="co.in", num=1, stop=1, pause=2):
+            return requests.get(j)
 
-    # search for city on weather.com
-    for j in search(query, tld="co.in", num=1, stop=1, pause=2):
-        return requests.get(j)
+    def manager(self):
+        # city = input from user
+        self.city = input("Type in a city to find the 10-day forecast: ")
 
+        url = self.google_query()
 
-def manager():
-    file = open("webScrape.txt", "w")
+        # weburl = url of weather.com for particular city
+        soup = bs(url.text, "html.parser")
 
-    # city = input from user
-    city = input("Type in a city to find the 10-day forecast: ")
+        # Retrieving the dates
+        urldates = soup.find_all('h2', attrs={'class': 'DetailsSummary--daypartName--2FBp2'})
+        # Retrieving the temperatures
+        urltemperatures = soup.find_all('span', attrs={'class': 'DetailsSummary--highTempValue--3Oteu'})
 
-    url = google_query(city)
+        forecast = self.retrieve_data(urldates, urltemperatures)
 
-    # weburl = url of weather.com for particular city
-    soup = bs(url.text, "html.parser")
-
-    # Retrieving the dates
-    urldates = soup.find_all('h2', attrs={'class': 'DetailsSummary--daypartName--2FBp2'})
-    # Retrieving the temperatures
-    urltemperatures = soup.find_all('span', attrs={'class': 'DetailsSummary--highTempValue--3Oteu'})
-
-    forecast = retrieve_data(urldates, urltemperatures)
-
-    return plot_graph(forecast, city)
-
-
-    # Use dictionary with date as key and temperature as value
-
-
+        return self.plot_graph(forecast, self.city)
